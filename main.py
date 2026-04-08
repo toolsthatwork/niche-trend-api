@@ -28,19 +28,35 @@ from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
+# ── Routers ──────────────────────────────────────────────────────────────────
+from routers import currency, qrcode_api, email_validator, weather, ip_geo
+from routers import phone_validator, sentiment, domain_lookup, crypto
+
 # ── App setup ────────────────────────────────────────────────────────────────
 
 app = FastAPI(
-    title="Niche Trend & Tag API",
+    title="Tools That Work — API Suite",
     description=(
-        "Real-time trending keywords, optimized tags, and content ideas "
-        "for POD sellers, Etsy creators, and YouTube channels. "
+        "A suite of powerful utility APIs: currency exchange, QR codes, "
+        "email validation, weather, IP geolocation, phone validation, "
+        "sentiment analysis, domain lookup, crypto prices, and niche trends. "
         "Powered by Tools That Work."
     ),
-    version="1.0.0",
+    version="2.0.0",
     docs_url="/docs",
     redoc_url="/redoc",
 )
+
+# Include all routers
+app.include_router(currency.router)
+app.include_router(qrcode_api.router)
+app.include_router(email_validator.router)
+app.include_router(weather.router)
+app.include_router(ip_geo.router)
+app.include_router(phone_validator.router)
+app.include_router(sentiment.router)
+app.include_router(domain_lookup.router)
+app.include_router(crypto.router)
 
 app.add_middleware(
     CORSMiddleware,
