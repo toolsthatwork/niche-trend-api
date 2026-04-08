@@ -58,6 +58,7 @@ APIS = [
     {"file": "iban_validator.json",     "name": "IBAN Validator"},
     {"file": "profanity_filter.json",   "name": "Profanity Filter and Content Moderation"},
     {"file": "ssl_checker.json",        "name": "SSL Certificate Checker"},
+    {"file": "uuid_generator.json",     "name": "UUID and GUID Generator"},
 ]
 
 PRICING_TIERS = [

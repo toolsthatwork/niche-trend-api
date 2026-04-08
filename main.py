@@ -36,7 +36,7 @@ from routers import country_info, timezone_api, password_tools, hash_tools, url_
 from routers import color_tools, base64_tools, unit_converter, postal_code, book_lookup
 from routers import readability, holidays_api, mortgage_calc, health_calc, random_data
 from routers import age_calc, number_words, text_tools, regex_tools, image_tools
-from routers import carbon_calc, iban_validator, profanity_check, ssl_checker
+from routers import carbon_calc, iban_validator, profanity_check, ssl_checker, uuid_tools
 
 # ── App setup ────────────────────────────────────────────────────────────────
 
@@ -92,6 +92,7 @@ app.include_router(carbon_calc.router)
 app.include_router(iban_validator.router)
 app.include_router(profanity_check.router)
 app.include_router(ssl_checker.router)
+app.include_router(uuid_tools.router)
 
 app.add_middleware(
     CORSMiddleware,

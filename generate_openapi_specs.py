@@ -312,6 +312,14 @@ APIS = [
         "router_attr": "router",
     },
     {
+        "name": "uuid_generator",
+        "title": "UUID and GUID Generator",
+        "description": "Generate version 1, 4, and 5 UUIDs. Bulk generate up to 1000 v4 UUIDs per request in standard, hex, or URN format. Validate UUIDs and extract version, variant, and hex representation. Deterministic v5 UUIDs from name+namespace.",
+        "prefix": "/uuid",
+        "module": "routers.uuid_tools",
+        "router_attr": "router",
+    },
+    {
         "name": "ssl_checker",
         "title": "SSL Certificate Checker",
         "description": "Check SSL certificate validity, expiry date, issuer, subject alternative names, and WCAG compliance for any domain. Bulk-check up to 20 domains at once. Returns days until expiry and expiration warnings.",
