@@ -1,0 +1,302 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Crypto and Token Prices",
+    "description": "Get real-time prices, market caps, and 24h changes for 10000+ cryptocurrencies. Includes trending coins, top coins by market cap, historical price charts, and multi-currency conversion. Powered by CoinGecko.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/crypto/": {
+      "get": {
+        "tags": [
+          "Crypto & Token Prices"
+        ],
+        "summary": "API Info",
+        "operationId": "crypto_info_crypto__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/crypto/price": {
+      "get": {
+        "tags": [
+          "Crypto & Token Prices"
+        ],
+        "summary": "Get current price for one or more cryptocurrencies",
+        "operationId": "get_price_crypto_price_get",
+        "parameters": [
+          {
+            "name": "coins",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Comma-separated coin IDs (e.g. bitcoin,ethereum,solana)",
+              "title": "Coins"
+            },
+            "description": "Comma-separated coin IDs (e.g. bitcoin,ethereum,solana)"
+          },
+          {
+            "name": "vs_currencies",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Comma-separated currencies (e.g. usd,eur,cad)",
+              "default": "usd",
+              "title": "Vs Currencies"
+            },
+            "description": "Comma-separated currencies (e.g. usd,eur,cad)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/crypto/trending": {
+      "get": {
+        "tags": [
+          "Crypto & Token Prices"
+        ],
+        "summary": "Get top 7 trending coins on CoinGecko",
+        "operationId": "trending_coins_crypto_trending_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/crypto/top": {
+      "get": {
+        "tags": [
+          "Crypto & Token Prices"
+        ],
+        "summary": "Get top N cryptocurrencies by market cap",
+        "operationId": "top_coins_crypto_top_get",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "description": "Number of coins (1-100)",
+              "default": 10,
+              "title": "Limit"
+            },
+            "description": "Number of coins (1-100)"
+          },
+          {
+            "name": "vs_currency",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Target currency",
+              "default": "usd",
+              "title": "Vs Currency"
+            },
+            "description": "Target currency"
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Sort order: market_cap_desc, volume_desc, gecko_desc",
+              "default": "market_cap_desc",
+              "title": "Order"
+            },
+            "description": "Sort order: market_cap_desc, volume_desc, gecko_desc"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/crypto/history": {
+      "get": {
+        "tags": [
+          "Crypto & Token Prices"
+        ],
+        "summary": "Get historical price for a coin",
+        "operationId": "coin_history_crypto_history_get",
+        "parameters": [
+          {
+            "name": "coin_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "CoinGecko coin ID (e.g. bitcoin, ethereum)",
+              "title": "Coin Id"
+            },
+            "description": "CoinGecko coin ID (e.g. bitcoin, ethereum)"
+          },
+          {
+            "name": "days",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 365,
+              "minimum": 1,
+              "description": "Number of days of history",
+              "default": 7,
+              "title": "Days"
+            },
+            "description": "Number of days of history"
+          },
+          {
+            "name": "vs_currency",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Target currency",
+              "default": "usd",
+              "title": "Vs Currency"
+            },
+            "description": "Target currency"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://niche-trend-api.onrender.com",
+      "description": "Production"
+    }
+  ]
+}

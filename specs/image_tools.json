@@ -1,0 +1,290 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Image Tools and Utilities",
+    "description": "Get image metadata (dimensions, format, EXIF), convert images to base64 from a URL, and generate placeholder images of any size with custom colors and labels. Supports PNG, JPEG, and WebP.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/image/": {
+      "get": {
+        "tags": [
+          "Image Tools"
+        ],
+        "summary": "API Info",
+        "operationId": "image_info_image__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/image/info": {
+      "get": {
+        "tags": [
+          "Image Tools"
+        ],
+        "summary": "Get metadata from an image URL",
+        "operationId": "image_metadata_image_info_get",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Public image URL",
+              "title": "Url"
+            },
+            "description": "Public image URL"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/image/base64": {
+      "get": {
+        "tags": [
+          "Image Tools"
+        ],
+        "summary": "Convert image URL to base64",
+        "operationId": "image_to_base64_image_base64_get",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Public image URL",
+              "title": "Url"
+            },
+            "description": "Public image URL"
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Output format: original, jpeg, png, webp",
+              "default": "original",
+              "title": "Format"
+            },
+            "description": "Output format: original, jpeg, png, webp"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/image/placeholder": {
+      "get": {
+        "tags": [
+          "Image Tools"
+        ],
+        "summary": "Generate a placeholder image",
+        "operationId": "placeholder_image_placeholder_get",
+        "parameters": [
+          {
+            "name": "width",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 2000,
+              "minimum": 1,
+              "default": 400,
+              "title": "Width"
+            }
+          },
+          {
+            "name": "height",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 2000,
+              "minimum": 1,
+              "default": 300,
+              "title": "Height"
+            }
+          },
+          {
+            "name": "bg_color",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Background color hex (without #)",
+              "default": "CCCCCC",
+              "title": "Bg Color"
+            },
+            "description": "Background color hex (without #)"
+          },
+          {
+            "name": "text_color",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Text color hex (without #)",
+              "default": "666666",
+              "title": "Text Color"
+            },
+            "description": "Text color hex (without #)"
+          },
+          {
+            "name": "text",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Custom label (default: WxH)",
+              "title": "Text"
+            },
+            "description": "Custom label (default: WxH)"
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Output format: png or jpeg",
+              "default": "png",
+              "title": "Format"
+            },
+            "description": "Output format: png or jpeg"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://niche-trend-api.onrender.com",
+      "description": "Production"
+    }
+  ]
+}

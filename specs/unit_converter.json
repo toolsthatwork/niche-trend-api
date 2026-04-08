@@ -1,0 +1,257 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Unit Converter",
+    "description": "Convert between units of length, weight, volume, area, speed, data, time, and temperature. Supports 80+ units including metric, imperial, and scientific. Fully offline with instant results.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/convert/": {
+      "get": {
+        "tags": [
+          "Unit Converter"
+        ],
+        "summary": "API Info",
+        "operationId": "converter_info_convert__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/convert/units": {
+      "get": {
+        "tags": [
+          "Unit Converter"
+        ],
+        "summary": "Convert between units",
+        "operationId": "convert_units_convert_units_get",
+        "parameters": [
+          {
+            "name": "value",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "description": "Value to convert",
+              "title": "Value"
+            },
+            "description": "Value to convert"
+          },
+          {
+            "name": "from_unit",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Source unit (e.g. km, pound, liter)",
+              "title": "From Unit"
+            },
+            "description": "Source unit (e.g. km, pound, liter)"
+          },
+          {
+            "name": "to_unit",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Target unit (e.g. mile, kg, gallon_us)",
+              "title": "To Unit"
+            },
+            "description": "Target unit (e.g. mile, kg, gallon_us)"
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Category hint: length, weight, volume, area, speed, data, time",
+              "title": "Category"
+            },
+            "description": "Category hint: length, weight, volume, area, speed, data, time"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/convert/temperature": {
+      "get": {
+        "tags": [
+          "Unit Converter"
+        ],
+        "summary": "Convert temperature units",
+        "operationId": "convert_temperature_convert_temperature_get",
+        "parameters": [
+          {
+            "name": "value",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "description": "Temperature value",
+              "title": "Value"
+            },
+            "description": "Temperature value"
+          },
+          {
+            "name": "from_unit",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Source unit: celsius, fahrenheit, kelvin, rankine",
+              "title": "From Unit"
+            },
+            "description": "Source unit: celsius, fahrenheit, kelvin, rankine"
+          },
+          {
+            "name": "to_unit",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Target unit: celsius, fahrenheit, kelvin, rankine",
+              "title": "To Unit"
+            },
+            "description": "Target unit: celsius, fahrenheit, kelvin, rankine"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/convert/list": {
+      "get": {
+        "tags": [
+          "Unit Converter"
+        ],
+        "summary": "List all available units by category",
+        "operationId": "list_units_convert_list_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://niche-trend-api.onrender.com",
+      "description": "Production"
+    }
+  ]
+}

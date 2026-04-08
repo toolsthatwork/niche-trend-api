@@ -31,6 +31,12 @@ from fastapi.responses import JSONResponse
 # ── Routers ──────────────────────────────────────────────────────────────────
 from routers import currency, qrcode_api, email_validator, weather, ip_geo
 from routers import phone_validator, sentiment, domain_lookup, crypto
+from routers import stocks, language_detection, translate, dictionary, barcode
+from routers import country_info, timezone_api, password_tools, hash_tools, url_tools
+from routers import color_tools, base64_tools, unit_converter, postal_code, book_lookup
+from routers import readability, holidays_api, mortgage_calc, health_calc, random_data
+from routers import age_calc, number_words, text_tools, regex_tools, image_tools
+from routers import carbon_calc, iban_validator, profanity_check, ssl_checker
 
 # ── App setup ────────────────────────────────────────────────────────────────
 
@@ -57,6 +63,35 @@ app.include_router(phone_validator.router)
 app.include_router(sentiment.router)
 app.include_router(domain_lookup.router)
 app.include_router(crypto.router)
+app.include_router(stocks.router)
+app.include_router(language_detection.router)
+app.include_router(translate.router)
+app.include_router(dictionary.router)
+app.include_router(barcode.router)
+app.include_router(country_info.router)
+app.include_router(timezone_api.router)
+app.include_router(password_tools.router)
+app.include_router(hash_tools.router)
+app.include_router(url_tools.router)
+app.include_router(color_tools.router)
+app.include_router(base64_tools.router)
+app.include_router(unit_converter.router)
+app.include_router(postal_code.router)
+app.include_router(book_lookup.router)
+app.include_router(readability.router)
+app.include_router(holidays_api.router)
+app.include_router(mortgage_calc.router)
+app.include_router(health_calc.router)
+app.include_router(random_data.router)
+app.include_router(age_calc.router)
+app.include_router(number_words.router)
+app.include_router(text_tools.router)
+app.include_router(regex_tools.router)
+app.include_router(image_tools.router)
+app.include_router(carbon_calc.router)
+app.include_router(iban_validator.router)
+app.include_router(profanity_check.router)
+app.include_router(ssl_checker.router)
 
 app.add_middleware(
     CORSMiddleware,

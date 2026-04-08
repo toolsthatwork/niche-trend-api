@@ -1,0 +1,308 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Color Converter and Tools",
+    "description": "Convert colors between HEX, RGB, HSL, and CMYK formats. Calculate WCAG contrast ratios for accessibility checks, generate random colors, and get the closest named color.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/color/": {
+      "get": {
+        "tags": [
+          "Color Tools"
+        ],
+        "summary": "API Info",
+        "operationId": "color_info_color__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/color/convert": {
+      "get": {
+        "tags": [
+          "Color Tools"
+        ],
+        "summary": "Convert color between HEX, RGB, HSL, CMYK",
+        "operationId": "convert_color_color_convert_get",
+        "parameters": [
+          {
+            "name": "hex",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "HEX color (e.g. #FF5733 or FF5733)",
+              "title": "Hex"
+            },
+            "description": "HEX color (e.g. #FF5733 or FF5733)"
+          },
+          {
+            "name": "r",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 255,
+              "minimum": 0,
+              "description": "Red (0-255)",
+              "title": "R"
+            },
+            "description": "Red (0-255)"
+          },
+          {
+            "name": "g",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 255,
+              "minimum": 0,
+              "description": "Green (0-255)",
+              "title": "G"
+            },
+            "description": "Green (0-255)"
+          },
+          {
+            "name": "b",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 255,
+              "minimum": 0,
+              "description": "Blue (0-255)",
+              "title": "B"
+            },
+            "description": "Blue (0-255)"
+          },
+          {
+            "name": "h",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "maximum": 360,
+              "minimum": 0,
+              "description": "Hue (0-360)",
+              "title": "H"
+            },
+            "description": "Hue (0-360)"
+          },
+          {
+            "name": "s",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "maximum": 100,
+              "minimum": 0,
+              "description": "Saturation (0-100)",
+              "title": "S"
+            },
+            "description": "Saturation (0-100)"
+          },
+          {
+            "name": "l",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "maximum": 100,
+              "minimum": 0,
+              "description": "Lightness (0-100)",
+              "title": "L"
+            },
+            "description": "Lightness (0-100)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/color/contrast": {
+      "get": {
+        "tags": [
+          "Color Tools"
+        ],
+        "summary": "Calculate contrast ratio between two colors",
+        "operationId": "contrast_ratio_color_contrast_get",
+        "parameters": [
+          {
+            "name": "color1",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "First color HEX (e.g. #FFFFFF)",
+              "title": "Color1"
+            },
+            "description": "First color HEX (e.g. #FFFFFF)"
+          },
+          {
+            "name": "color2",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Second color HEX (e.g. #000000)",
+              "title": "Color2"
+            },
+            "description": "Second color HEX (e.g. #000000)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/color/random": {
+      "get": {
+        "tags": [
+          "Color Tools"
+        ],
+        "summary": "Generate random colors",
+        "operationId": "random_color_color_random_get",
+        "parameters": [
+          {
+            "name": "count",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 20,
+              "minimum": 1,
+              "default": 5,
+              "title": "Count"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://niche-trend-api.onrender.com",
+      "description": "Production"
+    }
+  ]
+}

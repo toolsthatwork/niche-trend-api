@@ -1,0 +1,344 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Hash Generator",
+    "description": "Generate and verify cryptographic hashes using MD5, SHA-1, SHA-256, SHA-512, SHA3-256, SHA3-512, BLAKE2b, and BLAKE2s. Supports bulk hashing of up to 100 strings per request.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/hash/": {
+      "get": {
+        "tags": [
+          "Hash Generator"
+        ],
+        "summary": "API Info",
+        "operationId": "hash_info_hash__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hash/generate": {
+      "get": {
+        "tags": [
+          "Hash Generator"
+        ],
+        "summary": "Generate hash of a string",
+        "operationId": "generate_hash_hash_generate_get",
+        "parameters": [
+          {
+            "name": "text",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Text to hash",
+              "title": "Text"
+            },
+            "description": "Text to hash"
+          },
+          {
+            "name": "algorithm",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Hash algorithm: md5, sha1, sha256, sha384, sha512, sha3_256, sha3_512, blake2b, blake2s",
+              "default": "sha256",
+              "title": "Algorithm"
+            },
+            "description": "Hash algorithm: md5, sha1, sha256, sha384, sha512, sha3_256, sha3_512, blake2b, blake2s"
+          },
+          {
+            "name": "encoding",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Text encoding (utf-8, ascii, latin-1)",
+              "default": "utf-8",
+              "title": "Encoding"
+            },
+            "description": "Text encoding (utf-8, ascii, latin-1)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hash/generate/all": {
+      "get": {
+        "tags": [
+          "Hash Generator"
+        ],
+        "summary": "Generate hashes using all algorithms",
+        "operationId": "generate_all_hash_generate_all_get",
+        "parameters": [
+          {
+            "name": "text",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Text to hash",
+              "title": "Text"
+            },
+            "description": "Text to hash"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hash/verify": {
+      "get": {
+        "tags": [
+          "Hash Generator"
+        ],
+        "summary": "Verify if text matches a hash",
+        "operationId": "verify_hash_hash_verify_get",
+        "parameters": [
+          {
+            "name": "text",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Original text",
+              "title": "Text"
+            },
+            "description": "Original text"
+          },
+          {
+            "name": "hash_value",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Hash to verify against",
+              "title": "Hash Value"
+            },
+            "description": "Hash to verify against"
+          },
+          {
+            "name": "algorithm",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Hash algorithm used",
+              "default": "sha256",
+              "title": "Algorithm"
+            },
+            "description": "Hash algorithm used"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hash/bulk": {
+      "post": {
+        "tags": [
+          "Hash Generator"
+        ],
+        "summary": "Hash multiple strings (max 100)",
+        "operationId": "bulk_hash_hash_bulk_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BulkHashRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hash/algorithms": {
+      "get": {
+        "tags": [
+          "Hash Generator"
+        ],
+        "summary": "List supported hash algorithms",
+        "operationId": "list_algorithms_hash_algorithms_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BulkHashRequest": {
+        "properties": {
+          "texts": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Texts"
+          },
+          "algorithm": {
+            "type": "string",
+            "title": "Algorithm",
+            "default": "sha256"
+          }
+        },
+        "type": "object",
+        "required": [
+          "texts"
+        ],
+        "title": "BulkHashRequest"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://niche-trend-api.onrender.com",
+      "description": "Production"
+    }
+  ]
+}

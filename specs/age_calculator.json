@@ -1,0 +1,198 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Age Calculator",
+    "description": "Calculate exact age from a date of birth, time between two dates, and days until next birthday. Returns age in years, months, days, hours, and minutes, plus zodiac sign, Chinese zodiac, and generation.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/age/": {
+      "get": {
+        "tags": [
+          "Age Calculator"
+        ],
+        "summary": "API Info",
+        "operationId": "age_info_age__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/age/calculate": {
+      "get": {
+        "tags": [
+          "Age Calculator"
+        ],
+        "summary": "Calculate age from date of birth",
+        "operationId": "calculate_age_age_calculate_get",
+        "parameters": [
+          {
+            "name": "birthdate",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Date of birth in YYYY-MM-DD format",
+              "title": "Birthdate"
+            },
+            "description": "Date of birth in YYYY-MM-DD format"
+          },
+          {
+            "name": "reference_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Reference date (default: today) in YYYY-MM-DD format",
+              "title": "Reference Date"
+            },
+            "description": "Reference date (default: today) in YYYY-MM-DD format"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/age/between": {
+      "get": {
+        "tags": [
+          "Age Calculator"
+        ],
+        "summary": "Calculate time between two dates",
+        "operationId": "between_dates_age_between_get",
+        "parameters": [
+          {
+            "name": "date1",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "First date YYYY-MM-DD",
+              "title": "Date1"
+            },
+            "description": "First date YYYY-MM-DD"
+          },
+          {
+            "name": "date2",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Second date YYYY-MM-DD",
+              "title": "Date2"
+            },
+            "description": "Second date YYYY-MM-DD"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://niche-trend-api.onrender.com",
+      "description": "Production"
+    }
+  ]
+}

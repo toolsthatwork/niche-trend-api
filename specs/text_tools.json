@@ -1,0 +1,454 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Text Tools and Utilities",
+    "description": "Comprehensive text utilities: word count, reading time, slug generation, text truncation, case conversion (camelCase, snake_case, kebab-case, etc.), text cleaning, and extraction of emails, URLs, and numbers.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/text/": {
+      "get": {
+        "tags": [
+          "Text Tools"
+        ],
+        "summary": "API Info",
+        "operationId": "text_info_text__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/text/stats": {
+      "get": {
+        "tags": [
+          "Text Tools"
+        ],
+        "summary": "Get word count, char count, reading time, etc.",
+        "operationId": "text_stats_text_stats_get",
+        "parameters": [
+          {
+            "name": "text",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Text to analyze",
+              "title": "Text"
+            },
+            "description": "Text to analyze"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/text/slug": {
+      "get": {
+        "tags": [
+          "Text Tools"
+        ],
+        "summary": "Convert text to URL slug",
+        "operationId": "text_slug_text_slug_get",
+        "parameters": [
+          {
+            "name": "text",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Text to slugify",
+              "title": "Text"
+            },
+            "description": "Text to slugify"
+          },
+          {
+            "name": "separator",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Separator character (- or _)",
+              "default": "-",
+              "title": "Separator"
+            },
+            "description": "Separator character (- or _)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/text/truncate": {
+      "get": {
+        "tags": [
+          "Text Tools"
+        ],
+        "summary": "Truncate text to a character or word limit",
+        "operationId": "truncate_text_text_truncate_get",
+        "parameters": [
+          {
+            "name": "text",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Text to truncate",
+              "title": "Text"
+            },
+            "description": "Text to truncate"
+          },
+          {
+            "name": "max_chars",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Maximum characters",
+              "title": "Max Chars"
+            },
+            "description": "Maximum characters"
+          },
+          {
+            "name": "max_words",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Maximum words",
+              "title": "Max Words"
+            },
+            "description": "Maximum words"
+          },
+          {
+            "name": "ellipsis",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Suffix to add when truncated",
+              "default": "...",
+              "title": "Ellipsis"
+            },
+            "description": "Suffix to add when truncated"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/text/case": {
+      "get": {
+        "tags": [
+          "Text Tools"
+        ],
+        "summary": "Convert text case",
+        "operationId": "convert_case_text_case_get",
+        "parameters": [
+          {
+            "name": "text",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Text to convert",
+              "title": "Text"
+            },
+            "description": "Text to convert"
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Case type: upper, lower, title, sentence, camel, pascal, snake, kebab, constant",
+              "title": "To"
+            },
+            "description": "Case type: upper, lower, title, sentence, camel, pascal, snake, kebab, constant"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/text/clean": {
+      "get": {
+        "tags": [
+          "Text Tools"
+        ],
+        "summary": "Clean and normalize text",
+        "operationId": "clean_text_text_clean_get",
+        "parameters": [
+          {
+            "name": "text",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Text to clean",
+              "title": "Text"
+            },
+            "description": "Text to clean"
+          },
+          {
+            "name": "remove_extra_spaces",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true,
+              "title": "Remove Extra Spaces"
+            }
+          },
+          {
+            "name": "remove_html",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true,
+              "title": "Remove Html"
+            }
+          },
+          {
+            "name": "normalize_unicode",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true,
+              "title": "Normalize Unicode"
+            }
+          },
+          {
+            "name": "strip_punctuation",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Strip Punctuation"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/text/extract": {
+      "get": {
+        "tags": [
+          "Text Tools"
+        ],
+        "summary": "Extract emails, URLs, or numbers from text",
+        "operationId": "extract_from_text_text_extract_get",
+        "parameters": [
+          {
+            "name": "text",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Text to extract from",
+              "title": "Text"
+            },
+            "description": "Text to extract from"
+          },
+          {
+            "name": "extract",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "What to extract: emails, urls, numbers, hashtags, mentions, phone_numbers",
+              "title": "Extract"
+            },
+            "description": "What to extract: emails, urls, numbers, hashtags, mentions, phone_numbers"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://niche-trend-api.onrender.com",
+      "description": "Production"
+    }
+  ]
+}

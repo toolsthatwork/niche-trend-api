@@ -1,0 +1,230 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Domain and WHOIS Lookup",
+    "description": "Look up WHOIS registration data, DNS records (A, MX, TXT, NS, CNAME), and domain availability. Works for any registered domain worldwide.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/domain/": {
+      "get": {
+        "tags": [
+          "Domain & WHOIS"
+        ],
+        "summary": "API Info",
+        "operationId": "domain_info_domain__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/domain/whois": {
+      "get": {
+        "tags": [
+          "Domain & WHOIS"
+        ],
+        "summary": "Get WHOIS information for a domain",
+        "operationId": "whois_lookup_domain_whois_get",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Domain name (e.g. example.com)",
+              "title": "Domain"
+            },
+            "description": "Domain name (e.g. example.com)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/domain/dns": {
+      "get": {
+        "tags": [
+          "Domain & WHOIS"
+        ],
+        "summary": "Get DNS records for a domain",
+        "operationId": "dns_lookup_domain_dns_get",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Domain name",
+              "title": "Domain"
+            },
+            "description": "Domain name"
+          },
+          {
+            "name": "record_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "DNS record type: A, AAAA, MX, TXT, NS, CNAME, SOA",
+              "default": "A",
+              "title": "Record Type"
+            },
+            "description": "DNS record type: A, AAAA, MX, TXT, NS, CNAME, SOA"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/domain/availability": {
+      "get": {
+        "tags": [
+          "Domain & WHOIS"
+        ],
+        "summary": "Check if a domain is available for registration",
+        "operationId": "check_availability_domain_availability_get",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Domain name to check (e.g. mycooldomain.com)",
+              "title": "Domain"
+            },
+            "description": "Domain name to check (e.g. mycooldomain.com)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://niche-trend-api.onrender.com",
+      "description": "Production"
+    }
+  ]
+}

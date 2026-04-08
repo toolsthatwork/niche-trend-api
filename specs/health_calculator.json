@@ -1,0 +1,404 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Health and Fitness Calculator",
+    "description": "Calculate BMI, BMR (Mifflin-St Jeor and Harris-Benedict), TDEE with activity multipliers, and ideal body weight. Returns calorie goals for weight loss, maintenance, and gain.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/health/": {
+      "get": {
+        "tags": [
+          "Health Calculator"
+        ],
+        "summary": "API Info",
+        "operationId": "health_info_health__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health/bmi": {
+      "get": {
+        "tags": [
+          "Health Calculator"
+        ],
+        "summary": "Calculate Body Mass Index (BMI)",
+        "operationId": "bmi_health_bmi_get",
+        "parameters": [
+          {
+            "name": "weight_kg",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "description": "Weight in kilograms",
+              "title": "Weight Kg"
+            },
+            "description": "Weight in kilograms"
+          },
+          {
+            "name": "height_cm",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "description": "Height in centimeters",
+              "title": "Height Cm"
+            },
+            "description": "Height in centimeters"
+          },
+          {
+            "name": "weight_lb",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "description": "Weight in pounds (alternative to kg)",
+              "title": "Weight Lb"
+            },
+            "description": "Weight in pounds (alternative to kg)"
+          },
+          {
+            "name": "height_in",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "description": "Height in inches (alternative to cm)",
+              "title": "Height In"
+            },
+            "description": "Height in inches (alternative to cm)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health/bmr": {
+      "get": {
+        "tags": [
+          "Health Calculator"
+        ],
+        "summary": "Calculate Basal Metabolic Rate (BMR)",
+        "operationId": "bmr_health_bmr_get",
+        "parameters": [
+          {
+            "name": "weight_kg",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "title": "Weight Kg"
+            }
+          },
+          {
+            "name": "height_cm",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "title": "Height Cm"
+            }
+          },
+          {
+            "name": "age",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "maximum": 120,
+              "minimum": 1,
+              "title": "Age"
+            }
+          },
+          {
+            "name": "gender",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "male or female",
+              "title": "Gender"
+            },
+            "description": "male or female"
+          },
+          {
+            "name": "formula",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Formula: mifflin (default), harris, katch",
+              "default": "mifflin",
+              "title": "Formula"
+            },
+            "description": "Formula: mifflin (default), harris, katch"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health/tdee": {
+      "get": {
+        "tags": [
+          "Health Calculator"
+        ],
+        "summary": "Calculate Total Daily Energy Expenditure (TDEE)",
+        "operationId": "tdee_health_tdee_get",
+        "parameters": [
+          {
+            "name": "weight_kg",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "title": "Weight Kg"
+            }
+          },
+          {
+            "name": "height_cm",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "title": "Height Cm"
+            }
+          },
+          {
+            "name": "age",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "maximum": 120,
+              "minimum": 1,
+              "title": "Age"
+            }
+          },
+          {
+            "name": "gender",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "male or female",
+              "title": "Gender"
+            },
+            "description": "male or female"
+          },
+          {
+            "name": "activity",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "sedentary, light, moderate, active, very_active, extra_active",
+              "title": "Activity"
+            },
+            "description": "sedentary, light, moderate, active, very_active, extra_active"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health/ideal-weight": {
+      "get": {
+        "tags": [
+          "Health Calculator"
+        ],
+        "summary": "Calculate ideal body weight",
+        "operationId": "ideal_weight_health_ideal_weight_get",
+        "parameters": [
+          {
+            "name": "height_cm",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "title": "Height Cm"
+            }
+          },
+          {
+            "name": "gender",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "male or female",
+              "title": "Gender"
+            },
+            "description": "male or female"
+          },
+          {
+            "name": "frame",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "body frame: small, medium, large",
+              "default": "medium",
+              "title": "Frame"
+            },
+            "description": "body frame: small, medium, large"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://niche-trend-api.onrender.com",
+      "description": "Production"
+    }
+  ]
+}

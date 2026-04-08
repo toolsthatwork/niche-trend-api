@@ -1,0 +1,275 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Public Holidays API",
+    "description": "Get public holidays for 46+ countries by year. Check if today is a holiday, find upcoming holidays, and list holidays with dates, names, and weekdays. Supports country-specific regional holidays.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/holidays/": {
+      "get": {
+        "tags": [
+          "Public Holidays"
+        ],
+        "summary": "API Info",
+        "operationId": "holidays_info_holidays__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/holidays/year": {
+      "get": {
+        "tags": [
+          "Public Holidays"
+        ],
+        "summary": "Get all public holidays for a country and year",
+        "operationId": "get_year_holidays_year_get",
+        "parameters": [
+          {
+            "name": "country",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "ISO 2-letter country code (e.g. US, CA, GB, FR, DE)",
+              "title": "Country"
+            },
+            "description": "ISO 2-letter country code (e.g. US, CA, GB, FR, DE)"
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 2100,
+              "minimum": 2000,
+              "description": "Year (default: current year)",
+              "title": "Year"
+            },
+            "description": "Year (default: current year)"
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "State/province code for country-specific holidays (e.g. CA for California)",
+              "title": "State"
+            },
+            "description": "State/province code for country-specific holidays (e.g. CA for California)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/holidays/today": {
+      "get": {
+        "tags": [
+          "Public Holidays"
+        ],
+        "summary": "Check if today is a public holiday",
+        "operationId": "is_today_holiday_holidays_today_get",
+        "parameters": [
+          {
+            "name": "country",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "ISO 2-letter country code",
+              "title": "Country"
+            },
+            "description": "ISO 2-letter country code"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/holidays/next": {
+      "get": {
+        "tags": [
+          "Public Holidays"
+        ],
+        "summary": "Find the next N holidays from today",
+        "operationId": "next_holidays_holidays_next_get",
+        "parameters": [
+          {
+            "name": "country",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "ISO 2-letter country code",
+              "title": "Country"
+            },
+            "description": "ISO 2-letter country code"
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 20,
+              "minimum": 1,
+              "description": "Number of upcoming holidays to return",
+              "default": 5,
+              "title": "Count"
+            },
+            "description": "Number of upcoming holidays to return"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/holidays/countries": {
+      "get": {
+        "tags": [
+          "Public Holidays"
+        ],
+        "summary": "List all supported countries",
+        "operationId": "list_countries_holidays_countries_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://niche-trend-api.onrender.com",
+      "description": "Production"
+    }
+  ]
+}

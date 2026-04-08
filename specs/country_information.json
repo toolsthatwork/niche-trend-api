@@ -1,0 +1,249 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Country Information",
+    "description": "Get detailed information about any country: capital, population, area, languages, currencies, timezones, calling codes, flag emoji, borders, and more. Look up by name, ISO code, or region.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/country/": {
+      "get": {
+        "tags": [
+          "Country Information"
+        ],
+        "summary": "API Info",
+        "operationId": "country_info_country__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/country/name": {
+      "get": {
+        "tags": [
+          "Country Information"
+        ],
+        "summary": "Get country by name",
+        "operationId": "by_name_country_name_get",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Country name (e.g. France, Germany, Brazil)",
+              "title": "Name"
+            },
+            "description": "Country name (e.g. France, Germany, Brazil)"
+          },
+          {
+            "name": "full",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Exact match only",
+              "default": false,
+              "title": "Full"
+            },
+            "description": "Exact match only"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/country/code": {
+      "get": {
+        "tags": [
+          "Country Information"
+        ],
+        "summary": "Get country by ISO code (2 or 3 letter)",
+        "operationId": "by_code_country_code_get",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "ISO 3166-1 alpha-2 or alpha-3 code (e.g. US, FRA, CA)",
+              "title": "Code"
+            },
+            "description": "ISO 3166-1 alpha-2 or alpha-3 code (e.g. US, FRA, CA)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/country/region": {
+      "get": {
+        "tags": [
+          "Country Information"
+        ],
+        "summary": "Get all countries in a region",
+        "operationId": "by_region_country_region_get",
+        "parameters": [
+          {
+            "name": "region",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Region: Africa, Americas, Asia, Europe, Oceania, Antarctic",
+              "title": "Region"
+            },
+            "description": "Region: Africa, Americas, Asia, Europe, Oceania, Antarctic"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/country/all": {
+      "get": {
+        "tags": [
+          "Country Information"
+        ],
+        "summary": "Get all countries (basic info)",
+        "operationId": "all_countries_country_all_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://niche-trend-api.onrender.com",
+      "description": "Production"
+    }
+  ]
+}

@@ -1,0 +1,209 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Postal Code Lookup",
+    "description": "Look up location data (city, state, coordinates) from a postal or ZIP code, or find all postal codes for a given city and state. Supports US, Canada, UK, Germany, France, and 60+ countries.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/postal/": {
+      "get": {
+        "tags": [
+          "Postal Code Lookup"
+        ],
+        "summary": "API Info",
+        "operationId": "postal_info_postal__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/postal/lookup": {
+      "get": {
+        "tags": [
+          "Postal Code Lookup"
+        ],
+        "summary": "Look up location by postal code",
+        "operationId": "lookup_postal_postal_lookup_get",
+        "parameters": [
+          {
+            "name": "country",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "ISO 2-letter country code (e.g. US, CA, GB, DE, FR)",
+              "title": "Country"
+            },
+            "description": "ISO 2-letter country code (e.g. US, CA, GB, DE, FR)"
+          },
+          {
+            "name": "code",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Postal/ZIP code (e.g. 90210, SW1A 1AA)",
+              "title": "Code"
+            },
+            "description": "Postal/ZIP code (e.g. 90210, SW1A 1AA)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/postal/city": {
+      "get": {
+        "tags": [
+          "Postal Code Lookup"
+        ],
+        "summary": "Look up postal codes by city and state",
+        "operationId": "lookup_city_postal_city_get",
+        "parameters": [
+          {
+            "name": "country",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "ISO 2-letter country code (e.g. US, CA)",
+              "title": "Country"
+            },
+            "description": "ISO 2-letter country code (e.g. US, CA)"
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "State/province code (e.g. CA, NY, ON)",
+              "title": "State"
+            },
+            "description": "State/province code (e.g. CA, NY, ON)"
+          },
+          {
+            "name": "city",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "City name (e.g. Beverly Hills)",
+              "title": "City"
+            },
+            "description": "City name (e.g. Beverly Hills)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://niche-trend-api.onrender.com",
+      "description": "Production"
+    }
+  ]
+}

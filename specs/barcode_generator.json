@@ -1,0 +1,273 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Barcode Generator",
+    "description": "Generate barcodes as PNG, SVG, or base64. Supports Code 128, Code 39, EAN-13, EAN-8, UPC-A, ISBN-13, ISBN-10, and ISSN formats. Perfect for product labels, inventory systems, and publishing.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/barcode/": {
+      "get": {
+        "tags": [
+          "Barcode Generator"
+        ],
+        "summary": "API Info",
+        "operationId": "barcode_info_barcode__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/barcode/generate": {
+      "get": {
+        "tags": [
+          "Barcode Generator"
+        ],
+        "summary": "Generate a barcode as PNG image",
+        "operationId": "generate_png_barcode_generate_get",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Data to encode in the barcode",
+              "title": "Data"
+            },
+            "description": "Data to encode in the barcode"
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Barcode format: code128, code39, ean13, ean8, upca, isbn13, isbn10, issn",
+              "default": "code128",
+              "title": "Format"
+            },
+            "description": "Barcode format: code128, code39, ean13, ean8, upca, isbn13, isbn10, issn"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/barcode/generate/svg": {
+      "get": {
+        "tags": [
+          "Barcode Generator"
+        ],
+        "summary": "Generate a barcode as SVG",
+        "operationId": "generate_svg_barcode_generate_svg_get",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Data to encode",
+              "title": "Data"
+            },
+            "description": "Data to encode"
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Barcode format",
+              "default": "code128",
+              "title": "Format"
+            },
+            "description": "Barcode format"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/barcode/generate/base64": {
+      "get": {
+        "tags": [
+          "Barcode Generator"
+        ],
+        "summary": "Generate a barcode as base64 PNG",
+        "operationId": "generate_b64_barcode_generate_base64_get",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Data to encode",
+              "title": "Data"
+            },
+            "description": "Data to encode"
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Barcode format",
+              "default": "code128",
+              "title": "Format"
+            },
+            "description": "Barcode format"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/barcode/formats": {
+      "get": {
+        "tags": [
+          "Barcode Generator"
+        ],
+        "summary": "List supported barcode formats",
+        "operationId": "list_formats_barcode_formats_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://niche-trend-api.onrender.com",
+      "description": "Production"
+    }
+  ]
+}

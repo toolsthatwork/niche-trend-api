@@ -1,0 +1,348 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "QR Code Generator",
+    "description": "Generate QR codes as PNG, SVG, or base64. Supports custom colors, rounded and circle styles, adjustable size and border. Perfect for URLs, vCards, WiFi codes, and more.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/qrcode/": {
+      "get": {
+        "tags": [
+          "QR Code Generator"
+        ],
+        "summary": "API Info",
+        "operationId": "qrcode_info_qrcode__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/qrcode/generate": {
+      "get": {
+        "tags": [
+          "QR Code Generator"
+        ],
+        "summary": "Generate a QR code as PNG image",
+        "operationId": "generate_qr_qrcode_generate_get",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The data to encode (URL, text, email, phone, etc.)",
+              "title": "Data"
+            },
+            "description": "The data to encode (URL, text, email, phone, etc.)"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 40,
+              "minimum": 1,
+              "description": "QR code box size (1-40, default 10)",
+              "default": 10,
+              "title": "Size"
+            },
+            "description": "QR code box size (1-40, default 10)"
+          },
+          {
+            "name": "border",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 10,
+              "minimum": 0,
+              "description": "Border size in boxes (default 4)",
+              "default": 4,
+              "title": "Border"
+            },
+            "description": "Border size in boxes (default 4)"
+          },
+          {
+            "name": "fill_color",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Foreground color (e.g. 'black', '#000000')",
+              "default": "black",
+              "title": "Fill Color"
+            },
+            "description": "Foreground color (e.g. 'black', '#000000')"
+          },
+          {
+            "name": "back_color",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Background color (e.g. 'white', '#ffffff')",
+              "default": "white",
+              "title": "Back Color"
+            },
+            "description": "Background color (e.g. 'white', '#ffffff')"
+          },
+          {
+            "name": "style",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Module style: square, rounded, circle",
+              "default": "square",
+              "title": "Style"
+            },
+            "description": "Module style: square, rounded, circle"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/qrcode/generate/base64": {
+      "get": {
+        "tags": [
+          "QR Code Generator"
+        ],
+        "summary": "Generate QR code as base64 string",
+        "operationId": "generate_qr_base64_qrcode_generate_base64_get",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The data to encode",
+              "title": "Data"
+            },
+            "description": "The data to encode"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 40,
+              "minimum": 1,
+              "description": "Box size",
+              "default": 10,
+              "title": "Size"
+            },
+            "description": "Box size"
+          },
+          {
+            "name": "border",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 10,
+              "minimum": 0,
+              "description": "Border size",
+              "default": 4,
+              "title": "Border"
+            },
+            "description": "Border size"
+          },
+          {
+            "name": "fill_color",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Foreground color",
+              "default": "black",
+              "title": "Fill Color"
+            },
+            "description": "Foreground color"
+          },
+          {
+            "name": "back_color",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Background color",
+              "default": "white",
+              "title": "Back Color"
+            },
+            "description": "Background color"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/qrcode/generate/svg": {
+      "get": {
+        "tags": [
+          "QR Code Generator"
+        ],
+        "summary": "Generate QR code as SVG",
+        "operationId": "generate_qr_svg_qrcode_generate_svg_get",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The data to encode",
+              "title": "Data"
+            },
+            "description": "The data to encode"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 40,
+              "minimum": 1,
+              "description": "Box size",
+              "default": 10,
+              "title": "Size"
+            },
+            "description": "Box size"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://niche-trend-api.onrender.com",
+      "description": "Production"
+    }
+  ]
+}

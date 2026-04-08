@@ -1,0 +1,376 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Base64 Encode and Decode",
+    "description": "Encode text to Base64 and decode Base64 to text. Supports standard and URL-safe Base64, multiple input encodings, and validation. Handles large payloads via POST endpoints.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/base64/": {
+      "get": {
+        "tags": [
+          "Base64 Tools"
+        ],
+        "summary": "API Info",
+        "operationId": "base64_info_base64__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/base64/encode": {
+      "get": {
+        "tags": [
+          "Base64 Tools"
+        ],
+        "summary": "Encode text to Base64",
+        "operationId": "encode_text_base64_encode_get",
+        "parameters": [
+          {
+            "name": "text",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Text to encode",
+              "title": "Text"
+            },
+            "description": "Text to encode"
+          },
+          {
+            "name": "url_safe",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Use URL-safe Base64 (replaces +/ with -_)",
+              "default": false,
+              "title": "Url Safe"
+            },
+            "description": "Use URL-safe Base64 (replaces +/ with -_)"
+          },
+          {
+            "name": "encoding",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Input encoding (utf-8, ascii, latin-1)",
+              "default": "utf-8",
+              "title": "Encoding"
+            },
+            "description": "Input encoding (utf-8, ascii, latin-1)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Base64 Tools"
+        ],
+        "summary": "Encode text to Base64 (POST for long text)",
+        "operationId": "encode_post_base64_encode_post",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EncodeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/base64/decode": {
+      "get": {
+        "tags": [
+          "Base64 Tools"
+        ],
+        "summary": "Decode Base64 to text",
+        "operationId": "decode_text_base64_decode_get",
+        "parameters": [
+          {
+            "name": "encoded",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Base64 string to decode",
+              "title": "Encoded"
+            },
+            "description": "Base64 string to decode"
+          },
+          {
+            "name": "url_safe",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Use URL-safe decoder",
+              "default": false,
+              "title": "Url Safe"
+            },
+            "description": "Use URL-safe decoder"
+          },
+          {
+            "name": "encoding",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Output encoding (utf-8, ascii, latin-1)",
+              "default": "utf-8",
+              "title": "Encoding"
+            },
+            "description": "Output encoding (utf-8, ascii, latin-1)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Base64 Tools"
+        ],
+        "summary": "Decode Base64 to text (POST for long strings)",
+        "operationId": "decode_post_base64_decode_post",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DecodeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/base64/validate": {
+      "get": {
+        "tags": [
+          "Base64 Tools"
+        ],
+        "summary": "Check if a string is valid Base64",
+        "operationId": "validate_base64_base64_validate_get",
+        "parameters": [
+          {
+            "name": "value",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "String to validate",
+              "title": "Value"
+            },
+            "description": "String to validate"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "DecodeRequest": {
+        "properties": {
+          "encoded": {
+            "type": "string",
+            "title": "Encoded"
+          },
+          "url_safe": {
+            "type": "boolean",
+            "title": "Url Safe",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "encoded"
+        ],
+        "title": "DecodeRequest"
+      },
+      "EncodeRequest": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "url_safe": {
+            "type": "boolean",
+            "title": "Url Safe",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "title": "EncodeRequest"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://niche-trend-api.onrender.com",
+      "description": "Production"
+    }
+  ]
+}

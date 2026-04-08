@@ -1,0 +1,198 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Phone Number Validator",
+    "description": "Validate and format phone numbers from 240+ countries. Returns E164, international, and national formats, number type (mobile, landline, VOIP), carrier, location, and timezone. Powered by Google libphonenumber.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/phone/": {
+      "get": {
+        "tags": [
+          "Phone Validator"
+        ],
+        "summary": "API Info",
+        "operationId": "phone_info_phone__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/phone/validate": {
+      "get": {
+        "tags": [
+          "Phone Validator"
+        ],
+        "summary": "Validate and look up a phone number",
+        "operationId": "validate_phone_phone_validate_get",
+        "parameters": [
+          {
+            "name": "number",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Phone number (include country code, e.g. +14155552671)",
+              "title": "Number"
+            },
+            "description": "Phone number (include country code, e.g. +14155552671)"
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Default country code if number lacks +prefix (e.g. US, CA, GB)",
+              "title": "Country"
+            },
+            "description": "Default country code if number lacks +prefix (e.g. US, CA, GB)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/phone/format": {
+      "get": {
+        "tags": [
+          "Phone Validator"
+        ],
+        "summary": "Format a phone number in multiple formats",
+        "operationId": "format_phone_phone_format_get",
+        "parameters": [
+          {
+            "name": "number",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Phone number with country code",
+              "title": "Number"
+            },
+            "description": "Phone number with country code"
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Default country if no + prefix",
+              "title": "Country"
+            },
+            "description": "Default country if no + prefix"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://niche-trend-api.onrender.com",
+      "description": "Production"
+    }
+  ]
+}

@@ -1,0 +1,393 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Currency and Forex Exchange",
+    "description": "Real-time and historical currency exchange rates for 30+ currencies. Powered by European Central Bank data via Frankfurter. No API key setup required on your end.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/currency/": {
+      "get": {
+        "tags": [
+          "Currency & Forex"
+        ],
+        "summary": "API Info",
+        "operationId": "currency_info_currency__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/currency/currencies": {
+      "get": {
+        "tags": [
+          "Currency & Forex"
+        ],
+        "summary": "List all supported currencies",
+        "operationId": "list_currencies_currency_currencies_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/currency/latest": {
+      "get": {
+        "tags": [
+          "Currency & Forex"
+        ],
+        "summary": "Get latest exchange rates",
+        "operationId": "latest_rates_currency_latest_get",
+        "parameters": [
+          {
+            "name": "base",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Base currency (e.g. USD, EUR, GBP)",
+              "default": "USD",
+              "title": "Base"
+            },
+            "description": "Base currency (e.g. USD, EUR, GBP)"
+          },
+          {
+            "name": "symbols",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Comma-separated target currencies (e.g. EUR,GBP,CAD)",
+              "title": "Symbols"
+            },
+            "description": "Comma-separated target currencies (e.g. EUR,GBP,CAD)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/currency/convert": {
+      "get": {
+        "tags": [
+          "Currency & Forex"
+        ],
+        "summary": "Convert an amount between currencies",
+        "operationId": "convert_currency_convert_get",
+        "parameters": [
+          {
+            "name": "amount",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "description": "Amount to convert",
+              "title": "Amount"
+            },
+            "description": "Amount to convert"
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Source currency",
+              "default": "USD",
+              "title": "From"
+            },
+            "description": "Source currency"
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Target currency",
+              "default": "EUR",
+              "title": "To"
+            },
+            "description": "Target currency"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/currency/historical": {
+      "get": {
+        "tags": [
+          "Currency & Forex"
+        ],
+        "summary": "Get historical exchange rates",
+        "operationId": "historical_currency_historical_get",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Date in YYYY-MM-DD format",
+              "title": "Date"
+            },
+            "description": "Date in YYYY-MM-DD format"
+          },
+          {
+            "name": "base",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Base currency",
+              "default": "USD",
+              "title": "Base"
+            },
+            "description": "Base currency"
+          },
+          {
+            "name": "symbols",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Comma-separated target currencies",
+              "title": "Symbols"
+            },
+            "description": "Comma-separated target currencies"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/currency/range": {
+      "get": {
+        "tags": [
+          "Currency & Forex"
+        ],
+        "summary": "Get exchange rates over a date range",
+        "operationId": "rate_range_currency_range_get",
+        "parameters": [
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Start date YYYY-MM-DD",
+              "title": "Start Date"
+            },
+            "description": "Start date YYYY-MM-DD"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "End date YYYY-MM-DD",
+              "title": "End Date"
+            },
+            "description": "End date YYYY-MM-DD"
+          },
+          {
+            "name": "base",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Base currency",
+              "default": "USD",
+              "title": "Base"
+            },
+            "description": "Base currency"
+          },
+          {
+            "name": "symbols",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Comma-separated target currencies",
+              "title": "Symbols"
+            },
+            "description": "Comma-separated target currencies"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://niche-trend-api.onrender.com",
+      "description": "Production"
+    }
+  ]
+}

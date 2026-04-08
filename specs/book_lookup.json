@@ -1,0 +1,212 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Book and ISBN Lookup",
+    "description": "Look up books by ISBN-10 or ISBN-13. Get title, authors, publisher, publish date, page count, subjects, and cover image. Also supports full-text book search by title, author, or keyword.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/book/": {
+      "get": {
+        "tags": [
+          "Book Lookup"
+        ],
+        "summary": "API Info",
+        "operationId": "book_info_book__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/book/isbn": {
+      "get": {
+        "tags": [
+          "Book Lookup"
+        ],
+        "summary": "Look up a book by ISBN-10 or ISBN-13",
+        "operationId": "lookup_isbn_book_isbn_get",
+        "parameters": [
+          {
+            "name": "isbn",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "ISBN-10 or ISBN-13 (with or without dashes)",
+              "title": "Isbn"
+            },
+            "description": "ISBN-10 or ISBN-13 (with or without dashes)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/book/search": {
+      "get": {
+        "tags": [
+          "Book Lookup"
+        ],
+        "summary": "Search books by title or author",
+        "operationId": "search_books_book_search_get",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Search query (title, author, keyword)",
+              "title": "Query"
+            },
+            "description": "Search query (title, author, keyword)"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 20,
+              "minimum": 1,
+              "description": "Number of results",
+              "default": 5,
+              "title": "Limit"
+            },
+            "description": "Number of results"
+          },
+          {
+            "name": "author",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Filter by author name",
+              "title": "Author"
+            },
+            "description": "Filter by author name"
+          },
+          {
+            "name": "subject",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Filter by subject",
+              "title": "Subject"
+            },
+            "description": "Filter by subject"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://niche-trend-api.onrender.com",
+      "description": "Production"
+    }
+  ]
+}

@@ -1,0 +1,284 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Stock Prices and Market Data",
+    "description": "Real-time stock quotes, historical price data, and company fundamentals for any publicly traded company. Get price, market cap, P/E ratio, 52-week high/low, and multi-symbol quotes. Powered by Yahoo Finance.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/stocks/": {
+      "get": {
+        "tags": [
+          "Stock Prices"
+        ],
+        "summary": "API Info",
+        "operationId": "stocks_info_stocks__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stocks/quote": {
+      "get": {
+        "tags": [
+          "Stock Prices"
+        ],
+        "summary": "Get real-time stock quote",
+        "operationId": "get_quote_stocks_quote_get",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Stock ticker symbol (e.g. AAPL, TSLA, MSFT)",
+              "title": "Symbol"
+            },
+            "description": "Stock ticker symbol (e.g. AAPL, TSLA, MSFT)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stocks/info": {
+      "get": {
+        "tags": [
+          "Stock Prices"
+        ],
+        "summary": "Get detailed stock info and fundamentals",
+        "operationId": "get_info_stocks_info_get",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Stock ticker symbol",
+              "title": "Symbol"
+            },
+            "description": "Stock ticker symbol"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stocks/history": {
+      "get": {
+        "tags": [
+          "Stock Prices"
+        ],
+        "summary": "Get historical price data",
+        "operationId": "get_history_stocks_history_get",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Stock ticker symbol",
+              "title": "Symbol"
+            },
+            "description": "Stock ticker symbol"
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Period: 1d, 5d, 1mo, 3mo, 6mo, 1y, 2y, 5y, 10y, ytd, max",
+              "default": "1mo",
+              "title": "Period"
+            },
+            "description": "Period: 1d, 5d, 1mo, 3mo, 6mo, 1y, 2y, 5y, 10y, ytd, max"
+          },
+          {
+            "name": "interval",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Interval: 1m, 5m, 15m, 1h, 1d, 1wk, 1mo",
+              "default": "1d",
+              "title": "Interval"
+            },
+            "description": "Interval: 1m, 5m, 15m, 1h, 1d, 1wk, 1mo"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stocks/multi": {
+      "get": {
+        "tags": [
+          "Stock Prices"
+        ],
+        "summary": "Get quotes for multiple symbols",
+        "operationId": "get_multi_stocks_multi_get",
+        "parameters": [
+          {
+            "name": "symbols",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Comma-separated ticker symbols (e.g. AAPL,MSFT,GOOG)",
+              "title": "Symbols"
+            },
+            "description": "Comma-separated ticker symbols (e.g. AAPL,MSFT,GOOG)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://niche-trend-api.onrender.com",
+      "description": "Production"
+    }
+  ]
+}

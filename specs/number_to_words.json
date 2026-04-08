@@ -1,0 +1,358 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Number to Words Converter",
+    "description": "Convert numbers to words in 30+ languages. Supports cardinal (forty-two), ordinal (forty-second), and currency (forty-two dollars) formats. Bulk conversion of up to 50 numbers per request.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/number2words/": {
+      "get": {
+        "tags": [
+          "Number to Words"
+        ],
+        "summary": "API Info",
+        "operationId": "n2w_info_number2words__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/number2words/convert": {
+      "get": {
+        "tags": [
+          "Number to Words"
+        ],
+        "summary": "Convert number to words",
+        "operationId": "convert_number2words_convert_get",
+        "parameters": [
+          {
+            "name": "number",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "description": "Number to convert (e.g. 42, 1000000, 3.14)",
+              "title": "Number"
+            },
+            "description": "Number to convert (e.g. 42, 1000000, 3.14)"
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Language code (e.g. en, fr, de, es, ru)",
+              "default": "en",
+              "title": "Lang"
+            },
+            "description": "Language code (e.g. en, fr, de, es, ru)"
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Type: cardinal (forty-two), ordinal (forty-second), year, currency",
+              "default": "cardinal",
+              "title": "To"
+            },
+            "description": "Type: cardinal (forty-two), ordinal (forty-second), year, currency"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/number2words/ordinal": {
+      "get": {
+        "tags": [
+          "Number to Words"
+        ],
+        "summary": "Convert number to ordinal words (1st, 2nd, ...)",
+        "operationId": "ordinal_number2words_ordinal_get",
+        "parameters": [
+          {
+            "name": "number",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "Integer to convert to ordinal",
+              "title": "Number"
+            },
+            "description": "Integer to convert to ordinal"
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "en",
+              "title": "Lang"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/number2words/currency": {
+      "get": {
+        "tags": [
+          "Number to Words"
+        ],
+        "summary": "Convert number to currency words",
+        "operationId": "currency_words_number2words_currency_get",
+        "parameters": [
+          {
+            "name": "amount",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "description": "Amount to convert",
+              "title": "Amount"
+            },
+            "description": "Amount to convert"
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "en",
+              "title": "Lang"
+            }
+          },
+          {
+            "name": "currency",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Currency code hint (informational only)",
+              "default": "USD",
+              "title": "Currency"
+            },
+            "description": "Currency code hint (informational only)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/number2words/bulk": {
+      "post": {
+        "tags": [
+          "Number to Words"
+        ],
+        "summary": "Convert multiple numbers (max 50)",
+        "operationId": "bulk_convert_number2words_bulk_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BulkRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/number2words/languages": {
+      "get": {
+        "tags": [
+          "Number to Words"
+        ],
+        "summary": "List supported languages",
+        "operationId": "languages_number2words_languages_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BulkRequest": {
+        "properties": {
+          "numbers": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "title": "Numbers"
+          },
+          "lang": {
+            "type": "string",
+            "title": "Lang",
+            "default": "en"
+          },
+          "to": {
+            "type": "string",
+            "title": "To",
+            "default": "cardinal"
+          }
+        },
+        "type": "object",
+        "required": [
+          "numbers"
+        ],
+        "title": "BulkRequest"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://niche-trend-api.onrender.com",
+      "description": "Production"
+    }
+  ]
+}

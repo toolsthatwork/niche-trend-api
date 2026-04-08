@@ -1,0 +1,445 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Carbon Footprint Calculator",
+    "description": "Calculate CO2 emissions for flights, driving, electricity, diet, and food consumption. Uses IEA and IPCC emission factors. Returns kg CO2e, tonnes, trees needed to offset, and comparisons.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/carbon/": {
+      "get": {
+        "tags": [
+          "Carbon Footprint"
+        ],
+        "summary": "API Info",
+        "operationId": "carbon_info_carbon__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/carbon/flight": {
+      "get": {
+        "tags": [
+          "Carbon Footprint"
+        ],
+        "summary": "Calculate CO2 from a flight",
+        "operationId": "flight_carbon_carbon_flight_get",
+        "parameters": [
+          {
+            "name": "distance_km",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "description": "Flight distance in kilometers",
+              "title": "Distance Km"
+            },
+            "description": "Flight distance in kilometers"
+          },
+          {
+            "name": "passengers",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 500,
+              "minimum": 1,
+              "description": "Number of passengers",
+              "default": 1,
+              "title": "Passengers"
+            },
+            "description": "Number of passengers"
+          },
+          {
+            "name": "cabin_class",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "economy_short, economy_long, business, first_class",
+              "default": "economy_long",
+              "title": "Cabin Class"
+            },
+            "description": "economy_short, economy_long, business, first_class"
+          },
+          {
+            "name": "round_trip",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Is this a round trip?",
+              "default": false,
+              "title": "Round Trip"
+            },
+            "description": "Is this a round trip?"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/carbon/driving": {
+      "get": {
+        "tags": [
+          "Carbon Footprint"
+        ],
+        "summary": "Calculate CO2 from driving",
+        "operationId": "driving_carbon_carbon_driving_get",
+        "parameters": [
+          {
+            "name": "distance_km",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "title": "Distance Km"
+            }
+          },
+          {
+            "name": "vehicle_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "gasoline_small, gasoline_medium, gasoline_large, diesel, hybrid, electric_us, electric_eu, motorcycle",
+              "default": "gasoline_medium",
+              "title": "Vehicle Type"
+            },
+            "description": "gasoline_small, gasoline_medium, gasoline_large, diesel, hybrid, electric_us, electric_eu, motorcycle"
+          },
+          {
+            "name": "passengers",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 9,
+              "minimum": 1,
+              "default": 1,
+              "title": "Passengers"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/carbon/electricity": {
+      "get": {
+        "tags": [
+          "Carbon Footprint"
+        ],
+        "summary": "Calculate CO2 from electricity usage",
+        "operationId": "electricity_carbon_carbon_electricity_get",
+        "parameters": [
+          {
+            "name": "kwh",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "description": "Electricity usage in kWh",
+              "title": "Kwh"
+            },
+            "description": "Electricity usage in kWh"
+          },
+          {
+            "name": "region",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Region: us, eu, uk, canada, australia, global_average",
+              "default": "us",
+              "title": "Region"
+            },
+            "description": "Region: us, eu, uk, canada, australia, global_average"
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Period label: daily, monthly, yearly (informational)",
+              "default": "monthly",
+              "title": "Period"
+            },
+            "description": "Period label: daily, monthly, yearly (informational)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/carbon/diet": {
+      "get": {
+        "tags": [
+          "Carbon Footprint"
+        ],
+        "summary": "Calculate annual CO2 from diet",
+        "operationId": "diet_carbon_carbon_diet_get",
+        "parameters": [
+          {
+            "name": "diet_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "vegan, vegetarian, pescatarian, average, high_meat",
+              "title": "Diet Type"
+            },
+            "description": "vegan, vegetarian, pescatarian, average, high_meat"
+          },
+          {
+            "name": "days",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 3650,
+              "minimum": 1,
+              "default": 365,
+              "title": "Days"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/carbon/food": {
+      "get": {
+        "tags": [
+          "Carbon Footprint"
+        ],
+        "summary": "Calculate CO2 from specific food items",
+        "operationId": "food_carbon_carbon_food_get",
+        "parameters": [
+          {
+            "name": "beef_kg",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "minimum": 0,
+              "default": 0,
+              "title": "Beef Kg"
+            }
+          },
+          {
+            "name": "chicken_kg",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "minimum": 0,
+              "default": 0,
+              "title": "Chicken Kg"
+            }
+          },
+          {
+            "name": "pork_kg",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "minimum": 0,
+              "default": 0,
+              "title": "Pork Kg"
+            }
+          },
+          {
+            "name": "cheese_kg",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "minimum": 0,
+              "default": 0,
+              "title": "Cheese Kg"
+            }
+          },
+          {
+            "name": "milk_liters",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "minimum": 0,
+              "default": 0,
+              "title": "Milk Liters"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://niche-trend-api.onrender.com",
+      "description": "Production"
+    }
+  ]
+}

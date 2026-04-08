@@ -1,0 +1,208 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "IP Geolocation",
+    "description": "Look up geolocation data for any IPv4 or IPv6 address. Returns country, region, city, coordinates, timezone, ISP, and proxy/VPN/hosting detection. Supports bulk lookups of up to 50 IPs.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/ip/": {
+      "get": {
+        "tags": [
+          "IP Geolocation"
+        ],
+        "summary": "API Info",
+        "operationId": "ip_info_ip__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ip/lookup": {
+      "get": {
+        "tags": [
+          "IP Geolocation"
+        ],
+        "summary": "Look up geolocation for an IP address",
+        "operationId": "lookup_ip_ip_lookup_get",
+        "parameters": [
+          {
+            "name": "ip",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "IPv4 or IPv6 address to look up",
+              "title": "Ip"
+            },
+            "description": "IPv4 or IPv6 address to look up"
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Response language (en, de, es, pt-BR, fr, ja, zh-CN, ru)",
+              "default": "en",
+              "title": "Lang"
+            },
+            "description": "Response language (en, de, es, pt-BR, fr, ja, zh-CN, ru)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ip/me": {
+      "get": {
+        "tags": [
+          "IP Geolocation"
+        ],
+        "summary": "Get geolocation for the caller's IP address",
+        "operationId": "my_ip_ip_me_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ip/bulk": {
+      "post": {
+        "tags": [
+          "IP Geolocation"
+        ],
+        "summary": "Look up multiple IP addresses (max 50)",
+        "operationId": "bulk_lookup_ip_bulk_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "title": "Ips"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://niche-trend-api.onrender.com",
+      "description": "Production"
+    }
+  ]
+}

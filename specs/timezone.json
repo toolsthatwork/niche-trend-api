@@ -1,0 +1,282 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Timezone API",
+    "description": "Get current time in any timezone, convert times between timezones, and list all available timezones. Supports all IANA timezone identifiers (e.g. America/New_York, Europe/Paris, Asia/Tokyo).",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/timezone/": {
+      "get": {
+        "tags": [
+          "Timezone"
+        ],
+        "summary": "API Info",
+        "operationId": "timezone_info_timezone__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/timezone/now": {
+      "get": {
+        "tags": [
+          "Timezone"
+        ],
+        "summary": "Get current time in a timezone",
+        "operationId": "current_time_timezone_now_get",
+        "parameters": [
+          {
+            "name": "tz",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Timezone (e.g. America/New_York, Europe/Paris, Asia/Tokyo)",
+              "title": "Tz"
+            },
+            "description": "Timezone (e.g. America/New_York, Europe/Paris, Asia/Tokyo)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/timezone/convert": {
+      "get": {
+        "tags": [
+          "Timezone"
+        ],
+        "summary": "Convert time between timezones",
+        "operationId": "convert_time_timezone_convert_get",
+        "parameters": [
+          {
+            "name": "datetime_str",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Datetime in ISO format (e.g. 2024-06-15 14:30:00)",
+              "title": "Datetime Str"
+            },
+            "description": "Datetime in ISO format (e.g. 2024-06-15 14:30:00)"
+          },
+          {
+            "name": "from_tz",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Source timezone (e.g. America/New_York)",
+              "title": "From Tz"
+            },
+            "description": "Source timezone (e.g. America/New_York)"
+          },
+          {
+            "name": "to_tz",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Target timezone (e.g. Asia/Tokyo)",
+              "title": "To Tz"
+            },
+            "description": "Target timezone (e.g. Asia/Tokyo)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/timezone/info": {
+      "get": {
+        "tags": [
+          "Timezone"
+        ],
+        "summary": "Get info about a timezone",
+        "operationId": "timezone_details_timezone_info_get",
+        "parameters": [
+          {
+            "name": "tz",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Timezone name (e.g. America/New_York)",
+              "title": "Tz"
+            },
+            "description": "Timezone name (e.g. America/New_York)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/timezone/list": {
+      "get": {
+        "tags": [
+          "Timezone"
+        ],
+        "summary": "List all available timezones",
+        "operationId": "list_timezones_timezone_list_get",
+        "parameters": [
+          {
+            "name": "region",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Filter by region: America, Europe, Asia, Africa, Pacific, Australia, Atlantic, Indian, Arctic, Antarctica",
+              "title": "Region"
+            },
+            "description": "Filter by region: America, Europe, Asia, Africa, Pacific, Australia, Atlantic, Indian, Arctic, Antarctica"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://niche-trend-api.onrender.com",
+      "description": "Production"
+    }
+  ]
+}

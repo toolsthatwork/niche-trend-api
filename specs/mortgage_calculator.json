@@ -1,0 +1,342 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Mortgage and Loan Calculator",
+    "description": "Calculate monthly mortgage payments, full amortization schedules, and home affordability. Supports down payments, various term lengths, and interest rates. Returns total interest paid and payment breakdowns.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/mortgage/": {
+      "get": {
+        "tags": [
+          "Mortgage Calculator"
+        ],
+        "summary": "API Info",
+        "operationId": "mortgage_info_mortgage__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mortgage/calculate": {
+      "get": {
+        "tags": [
+          "Mortgage Calculator"
+        ],
+        "summary": "Calculate monthly mortgage payment",
+        "operationId": "calculate_mortgage_calculate_get",
+        "parameters": [
+          {
+            "name": "principal",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "description": "Loan amount",
+              "title": "Principal"
+            },
+            "description": "Loan amount"
+          },
+          {
+            "name": "annual_rate",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "maximum": 100,
+              "minimum": 0,
+              "description": "Annual interest rate (%)",
+              "title": "Annual Rate"
+            },
+            "description": "Annual interest rate (%)"
+          },
+          {
+            "name": "years",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "maximum": 50,
+              "minimum": 1,
+              "description": "Loan term in years",
+              "title": "Years"
+            },
+            "description": "Loan term in years"
+          },
+          {
+            "name": "down_payment",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Down payment amount",
+              "default": 0,
+              "title": "Down Payment"
+            },
+            "description": "Down payment amount"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mortgage/amortization": {
+      "get": {
+        "tags": [
+          "Mortgage Calculator"
+        ],
+        "summary": "Get full amortization schedule",
+        "operationId": "amortization_mortgage_amortization_get",
+        "parameters": [
+          {
+            "name": "principal",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "title": "Principal"
+            }
+          },
+          {
+            "name": "annual_rate",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "maximum": 100,
+              "minimum": 0,
+              "title": "Annual Rate"
+            }
+          },
+          {
+            "name": "years",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "maximum": 50,
+              "minimum": 1,
+              "title": "Years"
+            }
+          },
+          {
+            "name": "show_months",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Show monthly detail (default: yearly summary)",
+              "default": false,
+              "title": "Show Months"
+            },
+            "description": "Show monthly detail (default: yearly summary)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mortgage/affordability": {
+      "get": {
+        "tags": [
+          "Mortgage Calculator"
+        ],
+        "summary": "How much can you afford?",
+        "operationId": "affordability_mortgage_affordability_get",
+        "parameters": [
+          {
+            "name": "monthly_income",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "description": "Gross monthly income",
+              "title": "Monthly Income"
+            },
+            "description": "Gross monthly income"
+          },
+          {
+            "name": "annual_rate",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "maximum": 100,
+              "minimum": 0,
+              "title": "Annual Rate"
+            }
+          },
+          {
+            "name": "years",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 50,
+              "minimum": 1,
+              "default": 30,
+              "title": "Years"
+            }
+          },
+          {
+            "name": "monthly_debts",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Existing monthly debt payments",
+              "default": 0,
+              "title": "Monthly Debts"
+            },
+            "description": "Existing monthly debt payments"
+          },
+          {
+            "name": "dti_limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "maximum": 60,
+              "minimum": 20,
+              "description": "Debt-to-income ratio limit % (default 43%)",
+              "default": 43,
+              "title": "Dti Limit"
+            },
+            "description": "Debt-to-income ratio limit % (default 43%)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://niche-trend-api.onrender.com",
+      "description": "Production"
+    }
+  ]
+}
